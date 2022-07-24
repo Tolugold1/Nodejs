@@ -8,5 +8,8 @@
     "start": "node index"
   },
   "author": "Tolulope Adeleke",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3"
+  }
 }

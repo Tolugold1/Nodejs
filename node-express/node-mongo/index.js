@@ -1,5 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 const assert = require("assert");
+const dbupper = require("./operations");
 
 const url = "mongodb://localhost:27017/";
 const dbName = "toluserver";
@@ -10,24 +11,26 @@ MongoClient.connect(url, (err, client) => {
    console.log("Connection successful");
 
    const db = client.db(dbName);
-   const collection = db.collection("dishes");
-   collection.insertOne({"name": "japan", "description": "Testing"}, (err, result) => {
-      assert.equal(err, null);
+   dbupper.postDocument(db, {name: "bekky", description: "Deputy governor"}, 'dishes', (result) => {
+      console.log("Inserting documents \n", result.ops);
 
-      console.log("After Insert: \n");
-      console.log(result.ops);
+      dbupper.getDocument(db, 'dishes', (result) => {
+         console.log("Found document: \n", result);
 
-      collection.find({}).toArray((err, docs) => {
-         assert.equal(err, null);
+         dbupper.putDocument(db, {name: "bekky"}, {description: "Governor"}, 'dishes', (result) => {
+            console.log("Updating document", result.result);
 
-         console.log("Found: \n");
-         console.log(docs);
+            dbupper.getDocument(db, 'dishes', (result) => {
+               console.log("Found updated document: \n", result);
 
-         db.dropCollection("dishes", (err, result) => {
-            assert.equal(err, null);
+               db.dropCollection('dishes', (result) => {
+                  console.log("Deletion successful", result);
 
-            client.close();
-         });
-      });
-   });
+                  client.close();
+               })
+            })
+         })
+      })
+   })
+
 })

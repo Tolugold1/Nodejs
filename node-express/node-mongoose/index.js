@@ -8,37 +8,41 @@ const connect = mongoose.connect(url);
 connect.then((db) => {
    console.log("Connection successful");
 
-   var anotherDish = Dishes({
+   Dishes.create({
       name: "Uthappizza",
       description: "Testing schema"
    })
-   anotherDish.save()
-      .then((dish) => {
-         console.log(dish);
+   .then((dish) => {
+      console.log(dish);
 
-         return Dishes.find({});
-      })
-      .then((dishes) => {
-         console.log(dishes);
+      return Dishes.findByIdAndUpdate(dish._id, { $set: { description: "Updated text"}}, {new: true}).exec();
+   })
+   .then((dishes) => {
+      console.log(dishes);
 
-         return Dishes.updateOne({description: "Testing schema"}, {description: "Test test"}, {new: true})
+      dishes.comment.push({
+         rating: 2,
+         comment: "I\'m so happy to know mongodb.",
+         author: "Tolulope Adeleke"
       })
-      .then((dishes) => {
-         console.log(dishes);
+      return dishes.save();
+   })
+   .then((dishes) => {
+      console.log(dishes);
 
-         return Dishes.find({});
-      })
-      .then((dishes) => {
-         console.log(dishes);
+      return Dishes.deleteOne({});
+   })
+   .then((dishes) => {
+      console.log(dishes);
 
-         return Dishes.deleteOne({});
-      })
-      .then((dishes) => {
-         console.log(dishes);
+      return Dishes.find({});
+   })
+   .then((dishes) => {
+      console.log(dishes);
 
-         return mongoose.connection.close()
-      })
-      .catch((err) => console.log(err));
+      return mongoose.connection.close()
+   })
+   .catch((err) => console.log(err));
 
 })
 .catch((err) => console.log(err));

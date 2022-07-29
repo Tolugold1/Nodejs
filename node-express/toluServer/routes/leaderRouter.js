@@ -30,7 +30,7 @@ leaderRouter.route('/')
    res.end("Deleting all your leader data now...")
 });
 
-leaderRouter.route("/leader/:leaderId")
+leaderRouter.route("/:leaderId")
 
 .all((req, res, next) => {
    res.statusCode = 200;

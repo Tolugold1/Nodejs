@@ -30,7 +30,7 @@ promotionRouter.route('/')
    res.end("Deleting all your promotion data now...")
 });
 
-promotionRouter.route("/promotion/:promoId")
+promotionRouter.route("/:promoId")
 
 .all((req, res, next) => {
    res.statusCode = 200;
